@@ -4,7 +4,9 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <vector>
+
 #include "clickable_label.h"
+#include "chess_board.h"
 
 class Game : public QWidget
 {
@@ -19,8 +21,12 @@ private slots:
 private:
   void createBoard();
 
+  void setPieceOnSquare(int row, int col, const QPixmap& pixmap);
+
   QGridLayout* gridLayout_;
   std::vector<std::vector<ClickableLabel*>> squares_;
+
+  ChessBoard board_;
 };
 
 #endif  // GAME_H
