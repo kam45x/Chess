@@ -14,24 +14,15 @@ Game::Game(QWidget* parent) : QWidget(parent)
 
   resize(800, 800);
 
-  // Create a chess board
+  // Create a chess board object
   board_ = ChessBoard();
-  for (int row = 0; row < 8; ++row)
-  {
-    for (int col = 0; col < 8; ++col)
-    {
-      std::string piece = board_.getPiece(row, col);
-      if (piece != "__")
-      {
-        QPixmap pixmap("../images/" + QString::fromStdString(piece) + ".png");
-        setPieceOnSquare(row, col, pixmap);
-      }
-    }
-  }
+  updateBoard();
 }
 
 void Game::createBoard()
 {
+  squares_.clear();
+  
   for (int row = 0; row < 8; ++row)
   {
     std::vector<ClickableLabel*> rowSquares;
@@ -67,7 +58,17 @@ void Game::createBoard()
 
 void Game::handleSquareClicked(int row, int col)
 {
-  qDebug() << "Square clicked at position:" << row << "," << col;
+  if (squareClicked_[0] == -1 && squareClicked_[1] == -1)
+  {
+    squareClicked_ = {row, col};
+  }
+  else
+  {
+    board_.makeMove(squareClicked_[0], squareClicked_[1], row, col);
+    createBoard();
+    updateBoard();
+    squareClicked_ = {-1, -1};
+  }
 }
 
 void Game::setPieceOnSquare(int row, int col, const QPixmap& pixmap)
@@ -76,4 +77,24 @@ void Game::setPieceOnSquare(int row, int col, const QPixmap& pixmap)
   QPixmap scaledPixmap = pixmap.scaled(squareSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
   squares_[row][col]->setPixmap(scaledPixmap);
+}
+
+void Game::updateBoard()
+{
+  for (int row = 0; row < 8; ++row)
+  {
+    for (int col = 0; col < 8; ++col)
+    {
+      std::string piece = board_.getPiece(row, col);
+      if (piece != "__")
+      {
+        QPixmap pixmap("../images/" + QString::fromStdString(piece) + ".png");
+        setPieceOnSquare(row, col, pixmap);
+      }
+      else
+      {
+        squares_[row][col]->clear();
+      }
+    }
+  }
 }

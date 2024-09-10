@@ -23,10 +23,14 @@ private:
 
   void setPieceOnSquare(int row, int col, const QPixmap& pixmap);
 
+  void updateBoard();
+
   QGridLayout* gridLayout_;
   std::vector<std::vector<ClickableLabel*>> squares_;
 
   ChessBoard board_;
+
+  std::vector<int> squareClicked_ = {-1, -1};
 };
 
 #endif  // GAME_H

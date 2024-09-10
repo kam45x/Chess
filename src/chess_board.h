@@ -12,6 +12,8 @@ public:
 
   std::string getPiece(int row, int col) const;
 
+  void makeMove(int fromRow, int fromCol, int toRow, int toCol);
+
 private:
   std::vector<std::vector<std::string>> board_;
 };

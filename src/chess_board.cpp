@@ -18,3 +18,9 @@ std::string ChessBoard::getPiece(int row, int col) const
 {
   return board_[row][col];
 }
+
+void ChessBoard::makeMove(int fromRow, int fromCol, int toRow, int toCol)
+{
+  board_[toRow][toCol] = board_[fromRow][fromCol];
+  board_[fromRow][fromCol] = "__";
+}
